@@ -41,7 +41,7 @@ As a mechanic, I want to record the services a bike needs, so that we know what 
 
 ### US7 — BIG STORY: Manage a repair
 
-As workshop staff, I want to manage a repair from diagnosis until it is finished, so that we can keep track of the whole repair.
+As shop owner, I want to manage a repair from diagnosis until it is finished, so that I can keep track of the whole repair.
 
 **This story is deliberately too big and is split into the following stories:**
 

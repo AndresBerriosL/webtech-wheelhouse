@@ -59,7 +59,7 @@ As a mechanic, I want to mark a repair as completed, so that the counter staff k
 
 ### US8 — Check repair status
 
-- The bike's current status is shown next to its identifying information.
+As counter staff, I want to see if a bike is ready, so that I can answer customers when they call.
 
 #### Acceptance criteria
 

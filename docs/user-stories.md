@@ -28,7 +28,7 @@ As counter staff, I want to record the day we promised the bike would be ready, 
 #### Acceptance criteria
 
 - The promised date is shown for the repair.
-- The date can be different for each repair.
+- Each repair shows its own promised date.
 - A repair can be identified as late when the promised date has passed.
 
 ### US5 — Write a diagnosis
@@ -59,7 +59,7 @@ As a mechanic, I want to mark a repair as completed, so that the counter staff k
 
 ### US8 — Check repair status
 
-As counter staff, I want to see if a bike is ready, so that I can answer customers when they call.
+- The bike's current status is shown next to its identifying information.
 
 #### Acceptance criteria
 

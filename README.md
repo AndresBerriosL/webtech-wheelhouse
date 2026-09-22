@@ -1,14 +1,36 @@
 # Wheelhouse
 
-Wheelhouse es un sistema para una tienda de reparación de bicicletas de barrio.
+Wheelhouse is a neighbourhood bicycle repair shop application built with Ruby on Rails.
 
-El sistema será utilizado principalmente por el personal del taller y del mostrador para registrar bicicletas, administrar reparaciones, consultar el estado de los trabajos y mantener un historial de las reparaciones realizadas a cada bicicleta.
+The application includes public pages for:
 
-También tendrá una parte pública donde los clientes podrán consultar la lista de servicios y sus precios.
+- Home
+- Services
+- Visiting the workshop
+- About
 
-## Documentos
+The original project specification from Lab 3 is available in the `docs/` directory.
 
-- [Historias de usuario](docs/user-stories.md)
-- [Modelo de dominio](docs/domain-model.md)
-- [Decisiones](docs/decisions.md)
+## Documentation
+
+- [User stories](docs/user-stories.md)
+- [Domain model](docs/domain-model.md)
+- [Decisions](docs/decisions.md)
 - [Wireframes](docs/wireframes.md)
+
+## Requirements
+
+- Ruby 4.0.4
+- Rails 8
+- Node.js 26.1.0
+- npm
+- PostgreSQL
+- Yarn
+
+## Setup
+
+Clone the repository:
+
+```bash
+git clone https://github.com/AndresBerriosL/webtech-wheelhouse.git
+cd webtech-wheelhouse

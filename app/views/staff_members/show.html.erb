@@ -1,0 +1,34 @@
+<% content_for :title, @staff_member.name %>
+
+<h1><%= @staff_member.name %></h1>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <p><strong>Role:</strong> <%= @staff_member.role.humanize %></p>
+  </div>
+</div>
+
+<h2>Repairs</h2>
+
+<% if @staff_member.repairs.any? %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Repair</th>
+        <th>Bike</th>
+        <th>Customer</th>
+        <th>Status</th>
+        <th>Promised day</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render @staff_member.repairs %>
+    </tbody>
+  </table>
+<% else %>
+  <div class="alert alert-secondary">
+    This staff member has no assigned repairs.
+  </div>
+<% end %>
+
+<%= link_to "Back to staff", staff_members_path, class: "btn btn-outline-secondary" %>

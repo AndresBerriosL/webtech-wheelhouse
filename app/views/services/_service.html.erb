@@ -1,0 +1,4 @@
+<tr>
+  <td><%= link_to service.name, service_path(service) %></td>
+  <td><%= number_to_currency(service.current_price, unit: "$") %></td>
+</tr>

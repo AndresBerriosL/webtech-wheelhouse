@@ -1,0 +1,33 @@
+<% content_for :title, @customer.name %>
+
+<h1><%= @customer.name %></h1>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <p><strong>Phone:</strong> <%= @customer.phone %></p>
+  </div>
+</div>
+
+<h2>Bikes</h2>
+
+<% if @customer.bikes.any? %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Bike</th>
+        <th>Colour</th>
+        <th>Serial number</th>
+        <th>Owner</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render @customer.bikes %>
+    </tbody>
+  </table>
+<% else %>
+  <div class="alert alert-secondary">
+    This customer has no bikes.
+  </div>
+<% end %>
+
+<%= link_to "Back to customers", customers_path, class: "btn btn-outline-secondary" %>

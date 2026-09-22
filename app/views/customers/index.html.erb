@@ -1,0 +1,21 @@
+<% content_for :title, "Customers" %>
+
+<h1>Customers</h1>
+
+<% if @customers.any? %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Phone</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render @customers %>
+    </tbody>
+  </table>
+<% else %>
+  <div class="alert alert-secondary">
+    There are no customers yet.
+  </div>
+<% end %>

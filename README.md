@@ -2,14 +2,18 @@
 
 Wheelhouse is a bicycle repair shop application built with Ruby on Rails.
 
-The application currently includes public pages for:
+The application includes pages for:
 
 - Home
+- Customers
+- Bikes
+- Repairs
 - Services
+- Staff
 - Visiting the workshop
 - About
 
-The services page reads its information from the PostgreSQL database.
+Customers, bikes, repairs, services and staff have list and detail pages. The information is read from a PostgreSQL database.
 
 ## Documentation
 
@@ -33,7 +37,7 @@ On my Windows setup, PostgreSQL uses:
 - Role: `postgres`
 - Port: `5433`
 
-Before running Rails in Windows CMD:
+Before running Rails in Windows CMD, set the PostgreSQL connection variables:
 
 ```bat
 set PGPORT=5433
@@ -62,6 +66,12 @@ Install JavaScript dependencies:
 yarn install
 ```
 
+Build the CSS:
+
+```bash
+yarn build:css
+```
+
 Create the database, load the schema and seed the data:
 
 ```bat
@@ -70,7 +80,7 @@ ruby bin\rails db:setup
 
 ## Run the application
 
-Start the application:
+Start the Rails server:
 
 ```bat
 ruby bin\rails server
@@ -82,8 +92,12 @@ Then open:
 http://localhost:3000
 ```
 
-The services page is available at:
+## Main pages
 
 ```text
+http://localhost:3000/customers
+http://localhost:3000/bikes
+http://localhost:3000/repairs
 http://localhost:3000/services
+http://localhost:3000/staff_members
 ```

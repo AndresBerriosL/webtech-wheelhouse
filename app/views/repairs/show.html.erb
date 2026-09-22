@@ -1,0 +1,100 @@
+<% content_for :title, "Repair ##{@repair.id}" %>
+
+<h1>Repair #<%= @repair.id %></h1>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <p>
+      <strong>Bike:</strong>
+      <%= link_to "#{@repair.bike.make} #{@repair.bike.model}", bike_path(@repair.bike) %>
+    </p>
+
+    <p>
+      <strong>Customer:</strong>
+      <%= link_to @repair.customer.name, customer_path(@repair.customer) %>
+    </p>
+
+    <p>
+      <strong>Staff member:</strong>
+      <% if @repair.staff_member %>
+        <%= link_to @repair.staff_member.name, staff_member_path(@repair.staff_member) %>
+      <% else %>
+        Not assigned
+      <% end %>
+    </p>
+
+    <p><strong>Status:</strong> <%= @repair.status.humanize %></p>
+
+    <p>
+      <strong>Received:</strong>
+      <%= @repair.received_at.strftime("%d %b %Y, %H:%M") %>
+    </p>
+
+    <p>
+      <strong>Promised day:</strong>
+      <%= @repair.promised_on.strftime("%d %b %Y") %>
+    </p>
+
+    <% if @repair.quoted_at %>
+      <p>
+        <strong>Quoted:</strong>
+        <%= @repair.quoted_at.strftime("%d %b %Y, %H:%M") %>
+      </p>
+    <% end %>
+
+    <% if @repair.customer_decision %>
+      <p>
+        <strong>Customer decision:</strong>
+        <%= @repair.customer_decision.humanize %>
+      </p>
+    <% end %>
+
+    <% if @repair.picked_up_at %>
+      <p>
+        <strong>Picked up:</strong>
+        <%= @repair.picked_up_at.strftime("%d %b %Y, %H:%M") %>
+      </p>
+    <% end %>
+  </div>
+</div>
+
+<h2>Services charged</h2>
+
+<% if @repair.repair_services.any? %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Service</th>
+        <th>Charged price</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @repair.repair_services.each do |line| %>
+        <tr>
+          <td>
+            <%= link_to line.service.name, service_path(line.service) %>
+          </td>
+          <td>
+            <%= number_to_currency(line.charged_price, unit: "$") %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+
+    <tfoot>
+      <tr>
+        <th>Total</th>
+        <th>
+          <%= number_to_currency(@repair.repair_services.sum(:charged_price), unit: "$") %>
+        </th>
+      </tr>
+    </tfoot>
+  </table>
+<% else %>
+  <div class="alert alert-secondary">
+    No services have been charged to this repair.
+  </div>
+<% end %>
+
+<%= link_to "Back to repairs", repairs_path, class: "btn btn-outline-secondary" %>

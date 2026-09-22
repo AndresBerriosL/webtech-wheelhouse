@@ -1,0 +1,40 @@
+<% content_for :title, "#{@bike.make} #{@bike.model}" %>
+
+<h1><%= @bike.make %> <%= @bike.model %></h1>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <p>
+      <strong>Owner:</strong>
+      <%= link_to @bike.customer.name, customer_path(@bike.customer) %>
+    </p>
+
+    <p><strong>Colour:</strong> <%= @bike.colour %></p>
+    <p><strong>Serial number:</strong> <%= @bike.serial_number %></p>
+  </div>
+</div>
+
+<h2>Repair history</h2>
+
+<% if @bike.repairs.any? %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Repair</th>
+        <th>Bike</th>
+        <th>Customer</th>
+        <th>Status</th>
+        <th>Promised day</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render @bike.repairs %>
+    </tbody>
+  </table>
+<% else %>
+  <div class="alert alert-secondary">
+    This bike has no repairs.
+  </div>
+<% end %>
+
+<%= link_to "Back to bikes", bikes_path, class: "btn btn-outline-secondary" %>

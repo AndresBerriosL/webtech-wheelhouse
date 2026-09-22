@@ -1,0 +1,40 @@
+<% content_for :title, @service.name %>
+
+<h1><%= @service.name %></h1>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <p>
+      <strong>Current price:</strong>
+      <%= number_to_currency(@service.current_price, unit: "$") %>
+    </p>
+  </div>
+</div>
+
+<h2>Repairs</h2>
+
+<% if @service.repair_services.any? %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Repair</th>
+        <th>Charged price</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @service.repair_services.each do |line| %>
+        <tr>
+          <td><%= link_to "Repair ##{line.repair.id}", repair_path(line.repair) %></td>
+          <td><%= number_to_currency(line.charged_price, unit: "$") %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <div class="alert alert-secondary">
+    This service has not been used in any repairs.
+  </div>
+<% end %>
+
+<%= link_to "Back to services", services_path, class: "btn btn-outline-secondary" %>

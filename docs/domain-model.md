@@ -131,6 +131,7 @@ If the customer rejects it:
 - Added the default value `received` to the repair status.
 - Added a unique index to service names.
 - Added `created_at` and `updated_at` to all tables.
+- Changed the table IDs and relationship ID columns from `integer` to `bigint` to match the default Rails primary key type.
 
 ## The thing and the copy of the thing
 

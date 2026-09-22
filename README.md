@@ -1,15 +1,15 @@
 # Wheelhouse
 
-Wheelhouse is a neighbourhood bicycle repair shop application built with Ruby on Rails.
+Wheelhouse is a bicycle repair shop application built with Ruby on Rails.
 
-The application includes public pages for:
+The application currently includes public pages for:
 
 - Home
 - Services
 - Visiting the workshop
 - About
 
-The original project specification from Lab 3 is available in the `docs/` directory.
+The services page reads its information from the PostgreSQL database.
 
 ## Documentation
 
@@ -22,10 +22,24 @@ The original project specification from Lab 3 is available in the `docs/` direct
 
 - Ruby 4.0.4
 - Rails 8
-- Node.js 26.1.0
-- npm
 - PostgreSQL
+- Node.js
 - Yarn
+
+The development database uses PostgreSQL.
+
+On my Windows setup, PostgreSQL uses:
+
+- Role: `postgres`
+- Port: `5433`
+
+Before running Rails in Windows CMD:
+
+```bat
+set PGPORT=5433
+set PGUSER=postgres
+set PGPASSWORD=YOUR_POSTGRES_PASSWORD
+```
 
 ## Setup
 
@@ -34,7 +48,6 @@ Clone the repository:
 ```bash
 git clone https://github.com/AndresBerriosL/webtech-wheelhouse.git
 cd webtech-wheelhouse
-
 ```
 
 Install Ruby dependencies:
@@ -49,22 +62,28 @@ Install JavaScript dependencies:
 yarn install
 ```
 
-Create the development and test databases:
+Create the database, load the schema and seed the data:
 
-```bash
-bin/rails db:create
+```bat
+ruby bin\rails db:setup
 ```
 
 ## Run the application
 
-Start the application with:
+Start the application:
 
-```bash
-bin/dev
+```bat
+ruby bin\rails server
 ```
 
 Then open:
 
 ```text
 http://localhost:3000
+```
+
+The services page is available at:
+
+```text
+http://localhost:3000/services
 ```

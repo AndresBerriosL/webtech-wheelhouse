@@ -8,54 +8,70 @@
 
 ```dbml
 Table customers {
-  id integer [pk, increment]
+  id bigint [pk, increment]
   name varchar [not null]
   phone varchar [not null]
+  created_at datetime [not null]
+  updated_at datetime [not null]
+}
+
+Table staff_members {
+  id bigint [pk, increment]
+  name varchar [not null]
+  role varchar [not null]
+  created_at datetime [not null]
+  updated_at datetime [not null]
 }
 
 Table bikes {
-  id integer [pk, increment]
-  current_owner_id integer [not null]
-  brand varchar [not null]
+  id bigint [pk, increment]
+  customer_id bigint [not null]
+  make varchar [not null]
   model varchar [not null]
+  colour varchar [not null]
   serial_number varchar [not null, unique]
+  created_at datetime [not null]
+  updated_at datetime [not null]
 }
 
 Table repairs {
-  id integer [pk, increment]
-  bike_id integer [not null]
-  customer_id integer [not null]
+  id bigint [pk, increment]
+  bike_id bigint [not null]
+  customer_id bigint [not null]
+  staff_member_id bigint
   received_at datetime [not null]
-  promised_date date [not null]
-  diagnosis text
-  status varchar [not null]
+  promised_on date [not null]
+  status varchar [not null, default: 'received']
+  quoted_at datetime
+  customer_decision varchar
+  picked_up_at datetime
+  created_at datetime [not null]
+  updated_at datetime [not null]
 }
 
 Table services {
-  id integer [pk, increment]
-  name varchar [not null]
+  id bigint [pk, increment]
+  name varchar [not null, unique]
   current_price decimal(10,2) [not null]
+  created_at datetime [not null]
+  updated_at datetime [not null]
 }
 
 Table repair_services {
-  id integer [pk, increment]
-  repair_id integer [not null]
-  service_id integer [not null]
+  id bigint [pk, increment]
+  repair_id bigint [not null]
+  service_id bigint [not null]
   charged_price decimal(10,2) [not null]
+  created_at datetime [not null]
+  updated_at datetime [not null]
 }
 
-Table repair_photos {
-  id integer [pk, increment]
-  repair_id integer [not null]
-  image_url varchar [not null]
-}
-
-Ref: customers.id < bikes.current_owner_id
+Ref: customers.id < bikes.customer_id
 Ref: bikes.id < repairs.bike_id
 Ref: customers.id < repairs.customer_id
+Ref: staff_members.id < repairs.staff_member_id
 Ref: repairs.id < repair_services.repair_id
 Ref: services.id < repair_services.service_id
-Ref: repairs.id < repair_photos.repair_id
 ```
 
 ## Repair lifecycle
@@ -73,43 +89,57 @@ A repair can move through these states:
 
 ### Allowed transitions
 
-For a simple repair that does not need customer approval:
+For a simple repair:
 
 `received` → `in_progress` → `ready_for_pickup` → `picked_up`
 
-For a repair that needs diagnosis and approval:
+For a repair that needs approval:
 
 `received` → `diagnosed` → `awaiting_approval` → `approved` → `in_progress` → `ready_for_pickup` → `picked_up`
 
-If the customer rejects the proposed repair:
+If the customer rejects it:
 
 `received` → `diagnosed` → `awaiting_approval` → `rejected` → `ready_for_pickup` → `picked_up`
 
 ### Transitions that are not allowed
 
-- `awaiting_approval` → `in_progress` is not allowed because the shop must wait for the customer's approval.
+- `awaiting_approval` → `in_progress` is not allowed because the customer has not approved the repair yet.
 - `rejected` → `in_progress` is not allowed because the customer rejected the repair.
-- `picked_up` cannot transition to another state because the repair is finished and the bike has left the shop.
+- `picked_up` is the final state.
 
 ## Entity traceability
 
 | Entity | User story |
 |---|---|
 | `customers` | US1 — Register a bike |
+| `staff_members` | US6 — Add the needed services, US7c — Finish a repair |
 | `bikes` | US2 — Identify a bike, US10 — See a bike's repair history, US13 — Receive the correct bike |
-| `repairs` | US4 — Set a promised date, US5 — Write a diagnosis, US8 — Check repair status, US9 — See late repairs |
+| `repairs` | US4 — Set a promised date, US7b — Record the customer's decision, US8 — Check repair status, US9 — See late repairs |
 | `services` | US6 — Add the needed services, US12 — See service prices online |
 | `repair_services` | US7a — Prepare the repair cost, US11 — Keep old repair prices |
-| `repair_photos` | US3 — Take arrival photos |
+
+## Changes since Lab 3
+
+- Added `staff_members` to store the mechanics and counter staff.
+- Changed `bikes.current_owner_id` to `bikes.customer_id` to follow Rails naming conventions.
+- Added `colour` to bikes.
+- Removed `repair_photos` because photos will be implemented in a later lab.
+- Removed `diagnosis` because diagnosis text will be implemented later.
+- Changed `promised_date` to `promised_on`.
+- Added `staff_member_id` to repairs. It can be null because a mechanic may not be assigned yet.
+- Added `quoted_at`, `customer_decision` and `picked_up_at`. They can be null when those events have not happened yet.
+- Added the default value `received` to the repair status.
+- Added a unique index to service names.
+- Added `created_at` and `updated_at` to all tables.
 
 ## The thing and the copy of the thing
 
-Each physical bicycle has its own record in `bikes`. Two bikes can have the same brand and model, but they still have different records and serial numbers.
+Each physical bike has its own record. Two bikes can have the same make, model and colour, but their serial numbers are different.
 
-This prevents the mix-up described by the owner. If the system only stored a bike model and a quantity, it could tell us that there are two Trek Marlins, but not which one has a specific serial number or repair history.
+This lets the shop identify each bike separately and keep its own repair history.
 
 ## Derived, or stored?
 
-The total price of a repair is not stored in its own column. It can be calculated by adding the `charged_price` of all the services included in that repair.
+The total price of a repair is not stored. It can be calculated by adding the `charged_price` values from its services.
 
-The `charged_price` is stored even though it could look like it comes from `services.current_price`. This is necessary because prices can change over time and the shop can also charge less than the normal price. Without storing it, an old repair could change when the current price list changes.
+`charged_price` is stored separately from `current_price` because prices can change over time. This way an old repair keeps the price that was actually charged.

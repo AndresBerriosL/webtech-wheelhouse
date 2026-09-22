@@ -23,7 +23,7 @@
       <% end %>
     </p>
 
-    <p><strong>Status:</strong> <%= @repair.status.humanize %></p>
+    <strong>State:</strong> <%= @repair.state.humanize %></p>
 
     <p>
       <strong>Received:</strong>
@@ -60,7 +60,7 @@
 
 <h2>Services charged</h2>
 
-<% if @repair.repair_services.any? %>
+<% if @repair_services.any? %>
   <table class="table table-striped">
     <thead>
       <tr>
@@ -70,7 +70,7 @@
     </thead>
 
     <tbody>
-      <% @repair.repair_services.each do |line| %>
+      <% @repair_services.each do |line| %>
         <tr>
           <td>
             <%= link_to line.service.name, service_path(line.service) %>
@@ -86,7 +86,7 @@
       <tr>
         <th>Total</th>
         <th>
-          <%= number_to_currency(@repair.repair_services.sum(:charged_price), unit: "$") %>
+          <%= number_to_currency(@repair.total, unit: "$") %>
         </th>
       </tr>
     </tfoot>

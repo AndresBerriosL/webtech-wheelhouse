@@ -183,7 +183,7 @@ ApplicationRecord.transaction do
     staff_member_id: nil,
     received_at: at.call(today, 9),
     promised_on: today + 5.days,
-    status: "received",
+    state: "received",
     quoted_at: nil,
     customer_decision: nil,
     picked_up_at: nil
@@ -195,7 +195,7 @@ ApplicationRecord.transaction do
     staff_member_id: diego.id,
     received_at: at.call(today - 1.day, 10),
     promised_on: today + 4.days,
-    status: "diagnosed",
+    state: "diagnosed",
     quoted_at: nil,
     customer_decision: nil,
     picked_up_at: nil
@@ -207,7 +207,7 @@ ApplicationRecord.transaction do
     staff_member_id: valentina.id,
     received_at: at.call(today - 2.days, 11),
     promised_on: today + 2.days,
-    status: "awaiting_approval",
+    state: "awaiting_approval",
     quoted_at: at.call(today - 1.day, 15),
     customer_decision: nil,
     picked_up_at: nil
@@ -219,7 +219,7 @@ ApplicationRecord.transaction do
     staff_member_id: matias.id,
     received_at: at.call(today - 3.days, 9),
     promised_on: today + 3.days,
-    status: "approved",
+    state: "approved",
     quoted_at: at.call(today - 2.days, 14),
     customer_decision: "accepted",
     picked_up_at: nil
@@ -232,7 +232,7 @@ ApplicationRecord.transaction do
     staff_member_id: diego.id,
     received_at: at.call(today - 7.days, 8),
     promised_on: today - 2.days,
-    status: "in_progress",
+    state: "in_progress",
     quoted_at: at.call(today - 6.days, 13),
     customer_decision: "accepted",
     picked_up_at: nil
@@ -244,7 +244,7 @@ ApplicationRecord.transaction do
     staff_member_id: valentina.id,
     received_at: at.call(today - 5.days, 9),
     promised_on: today,
-    status: "ready_for_pickup",
+    state: "ready_for_pickup",
     quoted_at: at.call(today - 4.days, 12),
     customer_decision: "accepted",
     picked_up_at: nil
@@ -257,7 +257,7 @@ ApplicationRecord.transaction do
     staff_member_id: matias.id,
     received_at: at.call(today - 3.days, 10),
     promised_on: today + 1.day,
-    status: "rejected",
+    state: "rejected",
     quoted_at: at.call(today - 2.days, 16),
     customer_decision: "rejected",
     picked_up_at: nil
@@ -272,7 +272,7 @@ ApplicationRecord.transaction do
     staff_member_id: diego.id,
     received_at: at.call(same_day, 9),
     promised_on: same_day,
-    status: "picked_up",
+    state: "picked_up",
     quoted_at: at.call(same_day, 10),
     customer_decision: "accepted",
     picked_up_at: at.call(same_day, 17)
@@ -287,7 +287,7 @@ ApplicationRecord.transaction do
     staff_member_id: valentina.id,
     received_at: at.call(historical_day, 9),
     promised_on: historical_day + 3.days,
-    status: "picked_up",
+    state: "picked_up",
     quoted_at: at.call(historical_day, 11),
     customer_decision: "accepted",
     picked_up_at: at.call(historical_day + 2.days, 17)
@@ -299,7 +299,7 @@ ApplicationRecord.transaction do
     staff_member_id: matias.id,
     received_at: at.call(today - 40.days, 10),
     promised_on: today - 35.days,
-    status: "picked_up",
+    state: "picked_up",
     quoted_at: at.call(today - 39.days, 12),
     customer_decision: "accepted",
     picked_up_at: at.call(today - 34.days, 18)
@@ -311,7 +311,7 @@ ApplicationRecord.transaction do
     staff_member_id: valentina.id,
     received_at: at.call(today - 4.days, 11),
     promised_on: today + 2.days,
-    status: "in_progress",
+    state: "in_progress",
     quoted_at: at.call(today - 3.days, 14),
     customer_decision: "accepted",
     picked_up_at: nil
@@ -323,7 +323,7 @@ ApplicationRecord.transaction do
     staff_member_id: diego.id,
     received_at: at.call(today - 20.days, 9),
     promised_on: today - 15.days,
-    status: "ready_for_pickup",
+    state: "ready_for_pickup",
     quoted_at: at.call(today - 19.days, 15),
     customer_decision: "accepted",
     picked_up_at: nil
@@ -335,7 +335,7 @@ ApplicationRecord.transaction do
     staff_member_id: matias.id,
     received_at: at.call(today - 1.day, 13),
     promised_on: today + 5.days,
-    status: "awaiting_approval",
+    state: "awaiting_approval",
     quoted_at: at.call(today, 9),
     customer_decision: nil,
     picked_up_at: nil
@@ -347,7 +347,7 @@ ApplicationRecord.transaction do
     staff_member_id: diego.id,
     received_at: at.call(today - 2.days, 12),
     promised_on: today + 6.days,
-    status: "diagnosed",
+    state: "diagnosed",
     quoted_at: nil,
     customer_decision: nil,
     picked_up_at: nil
@@ -359,7 +359,7 @@ ApplicationRecord.transaction do
     staff_member_id: valentina.id,
     received_at: at.call(today - 60.days, 9),
     promised_on: today - 55.days,
-    status: "picked_up",
+    state: "picked_up",
     quoted_at: at.call(today - 59.days, 13),
     customer_decision: "accepted",
     picked_up_at: at.call(today - 54.days, 16)

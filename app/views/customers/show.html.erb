@@ -10,7 +10,7 @@
 
 <h2>Bikes</h2>
 
-<% if @customer.bikes.any? %>
+<% if @bikes.any? %>
   <table class="table table-striped">
     <thead>
       <tr>
@@ -21,7 +21,7 @@
       </tr>
     </thead>
     <tbody>
-      <%= render @customer.bikes %>
+      <%= render @bikes %>
     </tbody>
   </table>
 <% else %>

@@ -10,19 +10,19 @@
 
 <h2>Repairs</h2>
 
-<% if @staff_member.repairs.any? %>
+<% if @repairs.any? %>
   <table class="table table-striped">
     <thead>
       <tr>
         <th>Repair</th>
         <th>Bike</th>
         <th>Customer</th>
-        <th>Status</th>
+        <th>State</th>
         <th>Promised day</th>
       </tr>
     </thead>
     <tbody>
-      <%= render @staff_member.repairs %>
+      <%= render @repairs %>
     </tbody>
   </table>
 <% else %>

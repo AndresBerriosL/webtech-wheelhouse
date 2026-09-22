@@ -41,7 +41,7 @@ Table repairs {
   staff_member_id bigint
   received_at datetime [not null]
   promised_on date [not null]
-  status varchar [not null, default: 'received']
+  state varchar [not null, default: 'received']
   quoted_at datetime
   customer_decision varchar
   picked_up_at datetime
@@ -114,7 +114,7 @@ If the customer rejects it:
 | `customers` | US1 — Register a bike |
 | `staff_members` | US6 — Add the needed services, US7c — Finish a repair |
 | `bikes` | US2 — Identify a bike, US10 — See a bike's repair history, US13 — Receive the correct bike |
-| `repairs` | US4 — Set a promised date, US7b — Record the customer's decision, US8 — Check repair status, US9 — See late repairs |
+| `repairs` | US4 — Set a promised date, US7b — Record the customer's decision, US8 — Check repair state, US9 — See late repairs |
 | `services` | US6 — Add the needed services, US12 — See service prices online |
 | `repair_services` | US7a — Prepare the repair cost, US11 — Keep old repair prices |
 
@@ -128,10 +128,11 @@ If the customer rejects it:
 - Changed `promised_date` to `promised_on`.
 - Added `staff_member_id` to repairs. It can be null because a mechanic may not be assigned yet.
 - Added `quoted_at`, `customer_decision` and `picked_up_at`. They can be null when those events have not happened yet.
-- Added the default value `received` to the repair status.
+- Added the default value `received` to the repair state.
 - Added a unique index to service names.
 - Added `created_at` and `updated_at` to all tables.
 - Changed the table IDs and relationship ID columns from `integer` to `bigint` to match the default Rails primary key type.
+- Renamed the repair state column from `status` to `state` and kept `received` as its default value.
 
 ## The thing and the copy of the thing
 

@@ -16,19 +16,19 @@
 
 <h2>Repair history</h2>
 
-<% if @bike.repairs.any? %>
+<% if @repairs.any? %>
   <table class="table table-striped">
     <thead>
       <tr>
         <th>Repair</th>
         <th>Bike</th>
         <th>Customer</th>
-        <th>Status</th>
+        <th>State</th>
         <th>Promised day</th>
       </tr>
     </thead>
     <tbody>
-      <%= render @bike.repairs %>
+      <%= render @repairs %>
     </tbody>
   </table>
 <% else %>

@@ -13,7 +13,7 @@
 
 <h2>Repairs</h2>
 
-<% if @service.repair_services.any? %>
+<% if @repair_services.any? %>
   <table class="table table-striped">
     <thead>
       <tr>
@@ -23,7 +23,7 @@
     </thead>
 
     <tbody>
-      <% @service.repair_services.each do |line| %>
+      <% @repair_services.each do |line| %>
         <tr>
           <td><%= link_to "Repair ##{line.repair.id}", repair_path(line.repair) %></td>
           <td><%= number_to_currency(line.charged_price, unit: "$") %></td>

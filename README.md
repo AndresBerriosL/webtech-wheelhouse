@@ -32,18 +32,19 @@ Customers, bikes, repairs, services and staff have list and detail pages. The in
 
 The development database uses PostgreSQL.
 
-On my Windows setup, PostgreSQL uses:
-
-- Role: `postgres`
-- Port: `5433`
+````markdown
+The application uses PostgreSQL. On my Windows setup the PostgreSQL role is `postgres`.
 
 Before running Rails in Windows CMD, set the PostgreSQL connection variables:
 
 ```bat
-set PGPORT=5433
 set PGUSER=postgres
 set PGPASSWORD=YOUR_POSTGRES_PASSWORD
 ```
+
+If PostgreSQL is running on a non-default port, also set PGPORT. For example, my local installation uses:
+
+set PGPORT=5433
 
 ## Setup
 

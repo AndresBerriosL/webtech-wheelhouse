@@ -34,3 +34,37 @@ Clone the repository:
 ```bash
 git clone https://github.com/AndresBerriosL/webtech-wheelhouse.git
 cd webtech-wheelhouse
+
+```
+
+Install Ruby dependencies:
+
+```bash
+bundle install
+```
+
+Install JavaScript dependencies:
+
+```bash
+yarn install
+```
+
+Create the development and test databases:
+
+```bash
+bin/rails db:create
+```
+
+## Run the application
+
+Start the application with:
+
+```bash
+bin/dev
+```
+
+Then open:
+
+```text
+http://localhost:3000
+```

@@ -14,10 +14,10 @@ class RepairsController < ApplicationController
     @repair = Repair.new
 
     if params[:bike_id].present?
-      @repair.bike_id = params[:bike_id]
-
       bike = Bike.find_by(id: params[:bike_id])
-      @repair.customer_id = bike.customer_id if bike
+
+      @selected_bike_id = bike&.id
+      @selected_customer_id = bike&.customer_id
     end
 
     3.times { @repair.repair_services.build }

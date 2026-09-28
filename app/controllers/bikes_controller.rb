@@ -11,7 +11,7 @@ class BikesController < ApplicationController
 
   def new
     @bike = Bike.new
-    @bike.customer_id = params[:customer_id] if params[:customer_id].present?
+    @selected_customer_id = params[:customer_id]
   end
 
   def edit

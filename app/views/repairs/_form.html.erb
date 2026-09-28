@@ -33,7 +33,7 @@
             bike.id
           ]
         },
-        {},
+        { selected: repair.bike_id || @selected_bike_id },
         class: "form-select #{'is-invalid' if repair.errors[:bike_id].any?}" %>
 
     <% repair.errors.full_messages_for(:bike_id).each do |message| %>
@@ -48,7 +48,7 @@
         Customer.by_name,
         :id,
         :name,
-        {},
+        { selected: repair.customer_id || @selected_customer_id },
         class: "form-select #{'is-invalid' if repair.errors[:customer_id].any?}" %>
 
     <% repair.errors.full_messages_for(:customer_id).each do |message| %>

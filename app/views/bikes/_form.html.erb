@@ -18,7 +18,7 @@
         Customer.by_name,
         :id,
         :name,
-        {},
+        { selected: bike.customer_id || @selected_customer_id },
         class: "form-select #{'is-invalid' if bike.errors[:customer_id].any?}" %>
 
     <% bike.errors.full_messages_for(:customer_id).each do |message| %>

@@ -1,6 +1,9 @@
 <% content_for :title, "Bikes" %>
 
 <h1>Bikes</h1>
+<div class="mb-3">
+  <%= link_to "New bike", new_bike_path, class: "btn btn-primary" %>
+</div>
 
 <% if @bikes.any? %>
   <table class="table table-striped">

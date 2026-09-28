@@ -1,6 +1,9 @@
 <% content_for :title, "Staff" %>
 
 <h1>Staff</h1>
+<div class="mb-3">
+  <%= link_to "New staff member", new_staff_member_path, class: "btn btn-primary" %>
+</div>
 
 <% if @staff_members.any? %>
   <table class="table table-striped">

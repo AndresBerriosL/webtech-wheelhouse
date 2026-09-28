@@ -83,6 +83,12 @@
     </nav>
 
     <main class="container py-4">
+      <% flash.each do |type, message| %>
+        <div class="alert <%= type == "notice" ? "alert-success" : "alert-danger" %>"
+            role="alert">
+          <%= message %>
+        </div>
+      <% end %>
       <%= yield %>
     </main>
   </body>

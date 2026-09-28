@@ -9,6 +9,12 @@ class Repair < ApplicationRecord
            through: :repair_services,
            dependent: :destroy
 
+  accepts_nested_attributes_for :repair_services,
+                              reject_if: ->(attributes) {
+                                attributes["service_id"].blank?
+                              },
+                              allow_destroy: true
+
   enum :state, {
     received: "received",
     diagnosed: "diagnosed",

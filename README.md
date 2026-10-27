@@ -37,8 +37,7 @@ The application uses PostgreSQL. On my Windows setup the PostgreSQL role is `pos
 Before running Rails in Windows CMD, set the PostgreSQL connection variables:
 
 ```bat
-set PGUSER=postgres
-set PGPASSWORD=YOUR_POSTGRES_PASSWORD
+$env:POSTGRES_PASSWORD = Read-Host "Contraseña de PostgreSQL"
 ```
 
 If PostgreSQL is running on a non-default port, also set `PGPORT`. For example, my local installation uses:

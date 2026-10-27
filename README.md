@@ -103,3 +103,126 @@ http://localhost:3000/repairs
 http://localhost:3000/services
 http://localhost:3000/staff_members
 ```
+
+
+---
+
+## Lab 10 — JSON API
+
+Wheelhouse provides a versioned JSON API for
+accessing services and repairs.
+
+### Requirements
+
+- Ruby and Bundler
+- Ruby on Rails 8
+- PostgreSQL
+- Node.js and Yarn
+
+### Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/AndresBerriosL/webtech-wheelhouse.git
+cd webtech-wheelhouse
+```
+
+Install dependencies:
+
+```bash
+bundle install
+yarn install
+```
+
+Configure PostgreSQL credentials and initialize
+the database:
+
+```bash
+ruby bin/rails db:prepare
+```
+
+Build the CSS:
+
+```bash
+yarn build:css
+```
+
+Start the Rails server:
+
+```bash
+ruby bin/rails server
+```
+
+The application will be available at:
+
+http://localhost:3000
+
+### API Authentication
+
+Protected endpoints use Bearer Token authentication.
+
+Generate a secure token:
+
+```bash
+ruby -rsecurerandom -e "puts SecureRandom.hex(32)"
+```
+
+Store it in Rails encrypted credentials:
+
+```bash
+ruby bin/rails credentials:edit
+```
+
+Add the following structure:
+
+```yaml
+api:
+  token: "YOUR_GENERATED_TOKEN"
+```
+
+Never commit the master key or share the API token.
+
+### API Endpoints
+
+Public:
+
+- `GET /api/v1/services`
+- `GET /api/v1/services/:id`
+
+Authenticated:
+
+- `POST /api/v1/services`
+- `GET /api/v1/repairs`
+- `GET /api/v1/repairs/:id`
+
+Example:
+
+```bash
+curl http://localhost:3000/api/v1/services
+```
+
+For protected endpoints, include:
+
+`Authorization: Bearer YOUR_TOKEN`
+
+Full documentation: [docs/api.md](docs/api.md)
+
+### Personal Website Integration
+
+Repository:
+https://github.com/AndresBerriosL/webtech-lab-01
+
+Published website:
+https://andresberriosl.github.io/webtech-lab-01/
+
+The personal website uses JavaScript fetch requests
+to retrieve services and prices from Wheelhouse.
+
+For local testing, run Rails on port 3000 and
+serve the personal website on port 5500.
+
+The current localhost API URL is intended for
+local development. Public deployment requires
+a reachable HTTPS API endpoint.
+```

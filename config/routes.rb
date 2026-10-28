@@ -1,7 +1,13 @@
+
 Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   root "pages#home"
+
+  resource :session
+  resources :passwords, param: :token
+
+  resource :registration, only: [:new, :create]
 
   resources :customers
   resources :bikes
@@ -12,7 +18,6 @@ Rails.application.routes.draw do
   get "visit", to: "pages#visit", as: :visit
   get "about", to: "pages#about", as: :about
 
-  # Lab 10 — JSON API
   namespace :api do
     namespace :v1 do
       resources :services, only: [:index, :show, :create]

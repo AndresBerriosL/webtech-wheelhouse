@@ -3,7 +3,9 @@
 <h1>Services</h1>
 
 <div class="mb-3">
-  <%= link_to "New service", new_service_path, class: "btn btn-primary" %>
+  <% if authenticated? %>
+    <%= link_to "New service", new_service_path, class: "btn btn-primary" %>
+  <% end %>
 </div>
 
 <% if @services.any? %>

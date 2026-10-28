@@ -23,6 +23,17 @@
       <% end %>
     </p>
 
+    
+    <p>
+      <strong>Received by:</strong>
+      <% if @repair.received_by %>
+        <%= @repair.received_by.display_name %>
+      <% else %>
+        Not recorded (legacy repair)
+      <% end %>
+    </p>
+
+
     <p><strong>State:</strong> <%= @repair.state.humanize %></p>
 
     <p>

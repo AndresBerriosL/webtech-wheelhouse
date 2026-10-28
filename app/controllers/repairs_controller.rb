@@ -2,7 +2,7 @@ class RepairsController < ApplicationController
   before_action :set_repair, only: [:show, :edit, :update, :destroy]
 
   def index
-    @repairs = Repair.includes(:bike, :customer).by_promised_date
+    @repairs = Repair.includes(:bike, :customer, received_by: :staff_member).by_promised_date
   end
 
   def show
@@ -27,8 +27,10 @@ class RepairsController < ApplicationController
     3.times { @repair.repair_services.build }
   end
 
+  
   def create
     @repair = Repair.new(repair_params)
+    @repair.received_by = Current.user
 
     if @repair.save
       redirect_to @repair,
@@ -38,6 +40,7 @@ class RepairsController < ApplicationController
       render :new, status: :unprocessable_entity
     end
   end
+
 
   def update
     if @repair.update(repair_params)
@@ -63,16 +66,19 @@ class RepairsController < ApplicationController
 
   private
 
+  
   def set_repair
-    @repair =
-      Repair.includes(
-        :bike,
-        :customer,
-        :staff_member,
-        repair_services: :service
-      ).find(params[:id])
+    @repair = Repair.includes(
+      :bike,
+      :customer,
+      :staff_member,
+      { received_by: :staff_member },
+      repair_services: :service
+    ).find(params[:id])
   end
 
+
+  
   def repair_params
     params.expect(
       repair: [
@@ -94,6 +100,7 @@ class RepairsController < ApplicationController
       ]
     )
   end
+
 
   def ensure_empty_lines
     missing =

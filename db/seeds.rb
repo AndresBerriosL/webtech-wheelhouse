@@ -2,6 +2,8 @@ ApplicationRecord.transaction do
   # Keep the seed idempotent: every run starts from the same empty set.
   RepairService.delete_all
   Repair.delete_all
+  Session.delete_all
+  User.delete_all
   Bike.delete_all
   Service.delete_all
   StaffMember.delete_all
@@ -51,10 +53,82 @@ ApplicationRecord.transaction do
   # Staff
   # ---------------------------------------------------------------------------
 
-  diego = StaffMember.create!(name: "Diego Soto", role: "mechanic")
-  valentina = StaffMember.create!(name: "Valentina Rojas", role: "mechanic")
-  matias = StaffMember.create!(name: "Matias Fuentes", role: "mechanic")
-  StaffMember.create!(name: "Fernanda Silva", role: "counter")
+  
+  # ---------------------------------------------------------------------------
+  # Staff and user accounts
+  # ---------------------------------------------------------------------------
+
+  owner = StaffMember.create!(
+    name: "Carlos Herrera",
+    role: "owner"
+  )
+
+  diego = StaffMember.create!(
+    name: "Diego Soto",
+    role: "mechanic"
+  )
+
+  valentina = StaffMember.create!(
+    name: "Valentina Rojas",
+    role: "mechanic"
+  )
+
+  matias = StaffMember.create!(
+    name: "Matias Fuentes",
+    role: "mechanic"
+  )
+
+  fernanda = StaffMember.create!(
+    name: "Fernanda Silva",
+    role: "counter"
+  )
+
+  owner_user = User.create!(
+    email_address: "carlos@wheelhouse.cl",
+    password: "CarlosOwner2026!",
+    password_confirmation: "CarlosOwner2026!",
+    role: :owner,
+    staff_member: owner
+  )
+
+  diego_user = User.create!(
+    email_address: "diego@wheelhouse.cl",
+    password: "DiegoMechanic2026!",
+    password_confirmation: "DiegoMechanic2026!",
+    role: :mechanic,
+    staff_member: diego
+  )
+
+  valentina_user = User.create!(
+    email_address: "valentina@wheelhouse.cl",
+    password: "ValentinaMechanic2026!",
+    password_confirmation: "ValentinaMechanic2026!",
+    role: :mechanic,
+    staff_member: valentina
+  )
+
+  matias_user = User.create!(
+    email_address: "matias@wheelhouse.cl",
+    password: "MatiasMechanic2026!",
+    password_confirmation: "MatiasMechanic2026!",
+    role: :mechanic,
+    staff_member: matias
+  )
+
+  fernanda_user = User.create!(
+    email_address: "fernanda@wheelhouse.cl",
+    password: "FernandaCounter2026!",
+    password_confirmation: "FernandaCounter2026!",
+    role: :counter,
+    staff_member: fernanda
+  )
+
+  User.create!(
+    email_address: "visitor@wheelhouse.cl",
+    password: "VisitorCounter2026!",
+    password_confirmation: "VisitorCounter2026!"
+  )
+
 
   # ---------------------------------------------------------------------------
   # Customers
@@ -364,6 +438,32 @@ ApplicationRecord.transaction do
     customer_decision: "accepted",
     picked_up_at: at.call(today - 54.days, 16)
   )
+
+  
+  # ---------------------------------------------------------------------------
+  # Users who received repairs
+  # ---------------------------------------------------------------------------
+
+  # Repairs 1 and 2 are historical and have no receiving account.
+
+  {
+    repair3 => fernanda_user,
+    repair4 => diego_user,
+    repair5 => valentina_user,
+    repair6 => matias_user,
+    repair7 => fernanda_user,
+    repair8 => owner_user,
+    repair9 => diego_user,
+    repair10 => valentina_user,
+    repair11 => matias_user,
+    repair12 => fernanda_user,
+    repair13 => owner_user,
+    repair14 => diego_user,
+    repair15 => valentina_user
+  }.each do |repair, user|
+    repair.update!(received_by: user)
+  end
+
 
   # ---------------------------------------------------------------------------
   # Services charged on repairs

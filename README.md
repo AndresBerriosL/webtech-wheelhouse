@@ -225,3 +225,109 @@ The current localhost API URL is intended for
 local development. Public deployment requires
 a reachable HTTPS API endpoint.
 ```
+
+
+---
+
+## Lab 11 — Authentication and Workshop Accounts
+
+Wheelhouse uses the native Rails 8 authentication system.
+
+### Authentication
+
+The application supports:
+
+- Signing in and signing out
+- Account registration
+- Password recovery
+- Welcome emails
+- User roles
+- Repair attribution
+
+Passwords are stored securely using bcrypt password digests.
+
+### Roles
+
+Users have one of three roles:
+
+- `owner`
+- `mechanic`
+- `counter`
+
+New accounts receive the `counter` role automatically.
+
+Accounts may optionally be linked to staff members.
+
+### Development Accounts
+
+The following accounts are created by `db/seeds.rb`.
+
+These credentials are intended **only for local development**.
+
+| Email | Role | Password |
+|---|---|---|
+| carlos@wheelhouse.cl | owner | CarlosOwner2026! |
+| diego@wheelhouse.cl | mechanic | DiegoMechanic2026! |
+| valentina@wheelhouse.cl | mechanic | ValentinaMechanic2026! |
+| matias@wheelhouse.cl | mechanic | MatiasMechanic2026! |
+| fernanda@wheelhouse.cl | counter | FernandaCounter2026! |
+| visitor@wheelhouse.cl | counter | VisitorCounter2026! |
+
+The visitor account has no associated staff member.
+
+### Starting the Application
+
+After installing dependencies and configuring PostgreSQL, run:
+
+```bash
+ruby bin/rails db:prepare
+ruby bin/rails db:seed
+ruby bin/rails server
+```
+
+Open the application:
+
+http://localhost:3000
+
+Sign in at:
+
+http://localhost:3000/session/new
+
+Create an account at:
+
+http://localhost:3000/registration/new
+
+### Development Emails
+
+The application does not send real emails.
+
+Welcome emails and password reset emails are written to:
+
+`tmp/sent_emails/`
+
+No SMTP credentials or external email provider are required.
+
+To preview mailers in the browser, visit:
+
+http://localhost:3000/rails/mailers
+
+### Access Control
+
+Public pages:
+
+- Service list
+- Individual service page
+- Sign in
+- Registration
+- Password recovery
+
+All other application pages require an authenticated session.
+
+The JSON API continues to use Bearer Token authentication independently of browser sessions.
+
+### Repair Attribution
+
+Every newly created repair records the currently authenticated account as the person who received the bicycle.
+
+Existing repairs may have no receiving account.
+

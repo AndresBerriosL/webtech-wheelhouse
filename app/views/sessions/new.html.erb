@@ -1,0 +1,41 @@
+
+<div class="row justify-content-center py-5">
+  <div class="col-md-7 col-lg-5">
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        <h1 class="h3 mb-4">Sign in to Wheelhouse</h1>
+
+        <%= form_with url: session_path do |form| %>
+          <div class="mb-3">
+            <%= form.label :email_address, "Email address",
+                  class: "form-label" %>
+            <%= form.email_field :email_address,
+                  required: true,
+                  autofocus: true,
+                  autocomplete: "username",
+                  class: "form-control" %>
+          </div>
+
+          <div class="mb-3">
+            <%= form.label :password, "Password",
+                  class: "form-label" %>
+            <%= form.password_field :password,
+                  required: true,
+                  autocomplete: "current-password",
+                  class: "form-control" %>
+          </div>
+
+          <%= form.submit "Sign in",
+                class: "btn btn-primary w-100" %>
+        <% end %>
+
+        <hr>
+
+        <div class="d-flex justify-content-between">
+          <%= link_to "Create account", new_registration_path %>
+          <%= link_to "Forgot password?", new_password_path %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -6,8 +6,29 @@ Rails.application.configure do
   # Make code changes take effect immediately without server restart.
   config.enable_reloading = true
 
+  
+  config.action_mailer.default_url_options = {
+    host: "localhost",
+    port: 3000
+  }
+
+
   # Do not eager load code on boot.
   config.eager_load = false
+
+  
+  config.action_mailer.delivery_method = :file
+  config.action_mailer.file_settings = {
+    location: Rails.root.join("tmp", "sent_emails").to_s
+  }
+
+  config.action_mailer.raise_delivery_errors = true
+
+  config.action_mailer.default_url_options = {
+    host: "localhost",
+    port: 3000
+  }
+
 
   # Show full error reports.
   config.consider_all_requests_local = true

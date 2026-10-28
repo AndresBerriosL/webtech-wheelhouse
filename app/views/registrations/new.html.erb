@@ -1,0 +1,64 @@
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-7 col-lg-5">
+      <div class="card shadow-sm">
+        <div class="card-body p-4">
+          <h1 class="h3 mb-4">Create an account</h1>
+
+          <%= form_with model: @user, url: registration_path do |form| %>
+            <div class="mb-3">
+              <%= form.label :email_address, "Email address",
+                    class: "form-label" %>
+              <%= form.email_field :email_address,
+                    class: "form-control",
+                    required: true,
+                    autocomplete: "email" %>
+
+              <% @user.errors.full_messages_for(:email_address).each do |message| %>
+                <div class="text-danger small"><%= message %></div>
+              <% end %>
+            </div>
+
+            <div class="mb-3">
+              <%= form.label :password, class: "form-label" %>
+              <%= form.password_field :password,
+                    class: "form-control",
+                    required: true,
+                    minlength: 10,
+                    autocomplete: "new-password" %>
+
+              <% @user.errors.full_messages_for(:password).each do |message| %>
+                <div class="text-danger small"><%= message %></div>
+              <% end %>
+            </div>
+
+            <div class="mb-3">
+              <%= form.label :password_confirmation,
+                    "Confirm password",
+                    class: "form-label" %>
+              <%= form.password_field :password_confirmation,
+                    class: "form-control",
+                    required: true,
+                    autocomplete: "new-password" %>
+
+              <% @user.errors.full_messages_for(:password_confirmation).each do |message| %>
+                <div class="text-danger small"><%= message %></div>
+              <% end %>
+            </div>
+
+            <%= form.submit "Create account",
+                  class: "btn btn-primary w-100" %>
+          <% end %>
+
+          <hr>
+
+          <p class="text-center mb-0">
+            Already have an account?
+            <%= link_to "Sign in", new_session_path %>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,4 +1,5 @@
 class ServicesController < ApplicationController
+  allow_unauthenticated_access only: [:index, :show]
   before_action :set_service, only: [:show, :edit, :update, :destroy]
 
   def index

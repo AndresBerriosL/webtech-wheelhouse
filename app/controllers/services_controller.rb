@@ -1,24 +1,39 @@
+
 class ServicesController < ApplicationController
   allow_unauthenticated_access only: [:index, :show]
+
+  before_action :resume_session, only: [:index, :show]
   before_action :set_service, only: [:show, :edit, :update, :destroy]
 
   def index
-    @services = Service.by_name
+    authorize Service
+    @services = policy_scope(Service).by_name
   end
 
+
   def show
-    @repair_services =
-      @service.repair_services.includes(:repair).newest_repair_first
+    authorize @service
+
+    @repair_services = @service.repair_services
+                              .joins(:repair)
+                              .merge(policy_scope(Repair))
+                              .includes(:repair)
+                              .newest_repair_first
   end
+
 
   def new
     @service = Service.new
+    authorize @service
   end
 
   def edit
+    authorize @service
   end
 
   def create
+    authorize Service, :create?
+
     @service = Service.new(service_params)
 
     if @service.save
@@ -30,6 +45,8 @@ class ServicesController < ApplicationController
   end
 
   def update
+    authorize @service
+
     if @service.update(service_params)
       redirect_to @service,
                   notice: "#{@service.name} was updated."
@@ -39,6 +56,8 @@ class ServicesController < ApplicationController
   end
 
   def destroy
+    authorize @service
+
     if @service.destroy
       redirect_to services_path,
                   status: :see_other,

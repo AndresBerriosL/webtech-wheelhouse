@@ -65,3 +65,61 @@ The account comes from the authenticated session, never from submitted form para
 In development, password reset and welcome emails are written to files in `tmp/sent_emails`.
 
 No external SMTP provider or email credentials are required.
+
+
+## Lab 12 — Authorization with Pundit
+
+### Authorization strategy
+
+Wheelhouse uses Pundit to control access to customers, bikes, repairs, services, and staff members.
+
+Each resource has its own policy. ApplicationPolicy denies access by default.
+
+Policies receive the authenticated user through the ApplicationController's pundit_user method. Policies never access the session directly.
+
+In development, ApplicationController verifies that controller actions perform authorization and that indexes use policy scopes.
+
+### Public actions and verification exceptions
+
+The following actions are excluded from the global Pundit verification:
+
+| Controller | Actions | Reason |
+|---|---|---|
+| PagesController | home, visit, about | Informational pages without resource-specific operations |
+| SessionsController | new, create, destroy | Signing in and signing out must work independently of resource policies |
+| RegistrationsController | new, create | Visitors must be able to create an account |
+| PasswordsController | new, create, edit, update | Visitors must be able to recover their passwords |
+
+These exceptions do not disable authentication requirements. The informational pages still require an authenticated session.
+
+ServicesController#index and ServicesController#show remain accessible without signing in, but explicitly use Pundit authorization. The services index uses a policy scope.
+
+### Repair visibility
+
+Owners and counter staff can read all repairs.
+
+Mechanics can read only repairs assigned to the staff member linked to their account.
+
+Repair lists are filtered using RepairPolicy::Scope.
+
+### Repair editing
+
+Owners can edit every repair, including repairs that have been picked up.
+
+Counter staff can edit repairs that have not been picked up.
+
+Mechanics can edit only their own repairs that have not been picked up.
+
+Mechanics may change the state, diagnosis, and intake photos. Other submitted attributes are discarded using the policy's permitted_attributes method.
+
+### Denied requests
+
+Unauthorized actions return HTTP 403 using the application's custom forbidden page.
+
+Unauthenticated visitors attempting to open protected pages are redirected to sign in.
+
+### JSON API
+
+The existing /api/v1 endpoints retain their Bearer Token authentication.
+
+The API inherits from ActionController::API rather than ApplicationController, so the browser authorization callbacks do not change its behavior.

@@ -4,15 +4,29 @@
 
 <div class="card mb-4">
   <div class="card-body">
-    <p>
-      <strong>Bike:</strong>
-      <%= link_to "#{@repair.bike.make} #{@repair.bike.model}", bike_path(@repair.bike) %>
-    </p>
 
-    <p>
-      <strong>Customer:</strong>
-      <%= link_to @repair.customer.name, customer_path(@repair.customer) %>
-    </p>
+  <p>
+    <strong>Bike:</strong>
+    <% bike_name = "#{@repair.bike.make} #{@repair.bike.model}" %>
+
+    <% if policy(@repair.bike).show? %>
+      <%= link_to bike_name, bike_path(@repair.bike) %>
+    <% else %>
+      <%= bike_name %>
+    <% end %>
+  </p>
+
+<p>
+  <strong>Customer:</strong>
+
+  <% if policy(@repair.customer).show? %>
+    <%= link_to @repair.customer.name,
+        customer_path(@repair.customer) %>
+  <% else %>
+    <%= @repair.customer.name %>
+  <% end %>
+</p>
+
 
     <p>
       <strong>Staff member:</strong>
@@ -23,7 +37,7 @@
       <% end %>
     </p>
 
-    
+
     <p>
       <strong>Received by:</strong>
       <% if @repair.received_by %>
@@ -108,20 +122,25 @@
   </div>
 <% end %>
 
-<div class="d-flex gap-2">
-  <%= link_to "Edit repair",
-      edit_repair_path(@repair),
-      class: "btn btn-primary" %>
 
-  <%= button_to "Delete repair",
-      repair_path(@repair),
-      method: :delete,
-      class: "btn btn-danger",
-      form: {
-        data: {
-          turbo_confirm: "Delete Repair ##{@repair.id}?"
-        }
-      } %>
+<div class="d-flex gap-2">
+  <% if policy(@repair).update? %>
+    <%= link_to "Edit repair",
+        edit_repair_path(@repair),
+        class: "btn btn-primary" %>
+  <% end %>
+
+  <% if policy(@repair).destroy? %>
+    <%= button_to "Delete repair",
+        repair_path(@repair),
+        method: :delete,
+        class: "btn btn-danger",
+        form: {
+          data: {
+            turbo_confirm: "Delete Repair ##{@repair.id}?"
+          }
+        } %>
+  <% end %>
 
   <%= link_to "Back to repairs",
       repairs_path,

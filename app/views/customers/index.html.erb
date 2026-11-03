@@ -2,9 +2,15 @@
 
 <h1>Customers</h1>
 
+
 <div class="mb-3">
-  <%= link_to "New customer", new_customer_path, class: "btn btn-primary" %>
+  <% if policy(Customer).create? %>
+    <%= link_to "New customer",
+        new_customer_path,
+        class: "btn btn-primary" %>
+  <% end %>
 </div>
+
 
 <% if @customers.any? %>
   <table class="table table-striped">

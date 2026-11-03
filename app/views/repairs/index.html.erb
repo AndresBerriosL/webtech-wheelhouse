@@ -2,9 +2,15 @@
 
 <h1>Repairs</h1>
 
+
 <div class="mb-3">
-  <%= link_to "New repair", new_repair_path, class: "btn btn-primary" %>
+  <% if policy(Repair).create? %>
+    <%= link_to "New repair",
+        new_repair_path,
+        class: "btn btn-primary" %>
+  <% end %>
 </div>
+
 
 <% if @repairs.any? %>
   <table class="table table-striped">

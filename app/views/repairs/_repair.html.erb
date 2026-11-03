@@ -1,7 +1,28 @@
+
 <tr class="<%= 'table-danger' if repair.overdue? %>">
-  <td><%= link_to "Repair ##{repair.id}", repair_path(repair) %></td>
-  <td><%= link_to "#{repair.bike.make} #{repair.bike.model}", bike_path(repair.bike) %></td>
-  <td><%= link_to repair.customer.name, customer_path(repair.customer) %></td>
+  <td>
+    <%= link_to "Repair ##{repair.id}", repair_path(repair) %>
+  </td>
+
+  <td>
+    <% bike_name = "#{repair.bike.make} #{repair.bike.model}" %>
+
+    <% if policy(repair.bike).show? %>
+      <%= link_to bike_name, bike_path(repair.bike) %>
+    <% else %>
+      <%= bike_name %>
+    <% end %>
+  </td>
+
+  <td>
+    <% if policy(repair.customer).show? %>
+      <%= link_to repair.customer.name,
+          customer_path(repair.customer) %>
+    <% else %>
+      <%= repair.customer.name %>
+    <% end %>
+  </td>
+
   <td><%= repair.state.humanize %></td>
   <td><%= repair.promised_on.strftime("%d %b %Y") %></td>
 </tr>

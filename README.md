@@ -331,3 +331,145 @@ Every newly created repair records the currently authenticated account as the pe
 
 Existing repairs may have no receiving account.
 
+
+---
+
+## Lab 12 — Authorization with Pundit
+
+Wheelhouse uses Pundit to enforce role-based permissions throughout the application.
+
+The authorization rules are documented in [Permissions](docs/permissions.md).
+
+### User roles
+
+- **Owner:** Full access to customers, bikes, repairs, services, and staff.
+- **Counter:** Manages customers, bikes, and repairs, but cannot delete records or edit repairs that have been picked up.
+- **Mechanic:** Reads and updates only assigned repairs that have not been picked up. Can change their state, diagnosis, and intake photos. Can read services and staff information.
+
+New accounts created through registration automatically receive the Counter role.
+
+### Requirements
+
+- Ruby 4.0.4
+- Bundler
+- Rails 8
+- PostgreSQL
+- Node.js
+- Yarn
+
+### Setup on Windows (PowerShell)
+
+Clone the repository:
+
+```powershell
+git clone https://github.com/AndresBerriosL/webtech-wheelhouse.git
+cd webtech-wheelhouse
+```
+
+Install dependencies:
+
+```powershell
+bundle install
+yarn install
+yarn build:css
+```
+
+Make sure PostgreSQL is running.
+
+Configure the PostgreSQL connection:
+
+```powershell
+$env:POSTGRES_PASSWORD = Read-Host "PostgreSQL password"
+$env:PGHOST = "127.0.0.1"
+$env:PGPORT = "5433"
+```
+
+Port 5433 is used in the author's local environment. Change it if your PostgreSQL installation uses another port, such as 5432.
+
+Prepare the database:
+
+```powershell
+ruby bin\rails db:prepare
+```
+
+Populate a new development database with sample data:
+
+```powershell
+ruby bin\rails db:seed
+```
+
+The seed script recreates the sample workshop data. Running it on a database containing information you want to preserve is not recommended.
+
+Start the application:
+
+```powershell
+ruby bin\rails server
+```
+
+Open:
+
+http://localhost:3000
+
+Sign in:
+
+http://localhost:3000/session/new
+
+Register:
+
+http://localhost:3000/registration/new
+
+### Development accounts
+
+All accounts below are created by `db/seeds.rb` and are intended for local development only.
+
+| Account | Password | Role and capabilities |
+|---|---|---|
+| carlos@wheelhouse.cl | CarlosOwner2026! | Owner: manages all workshop resources, including deletion and picked-up repairs |
+| fernanda@wheelhouse.cl | FernandaCounter2026! | Counter: manages customers, bikes and non-picked-up repairs, without deletion |
+| diego@wheelhouse.cl | DiegoMechanic2026! | Mechanic: reads assigned repairs and edits their state, diagnosis and intake photos before pickup |
+| valentina@wheelhouse.cl | ValentinaMechanic2026! | Mechanic: same permissions as Diego, restricted to Valentina's assignments |
+| matias@wheelhouse.cl | MatiasMechanic2026! | Mechanic: same permissions as Diego, restricted to Matias's assignments |
+| visitor@wheelhouse.cl | VisitorCounter2026! | Counter: standard counter permissions, without an associated staff member |
+
+For the complete permission matrix, see [docs/permissions.md](docs/permissions.md).
+
+### Public pages
+
+Visitors without accounts may access the services index and individual service pages.
+
+Other workshop resources require authentication.
+
+Unauthorized actions return HTTP 403 with a custom forbidden page.
+
+### Repair authorization
+
+Mechanics see only repairs assigned to the staff member linked to their account.
+
+A mechanic cannot read or edit another mechanic's repairs.
+
+Repairs in the `picked_up` state can be edited only by the owner.
+
+The repair form uses `RepairPolicy#permitted_attributes` to restrict fields.
+
+### JSON API
+
+The `/api/v1` API retains the Bearer Token authentication implemented in Lab 10.
+
+See [API documentation](docs/api.md).
+
+### Security checks
+
+Run the Rails tests:
+
+```powershell
+ruby bin\rails test
+```
+
+Run Brakeman:
+
+```powershell
+ruby bin\brakeman
+```
+
+Development mode also verifies that protected controller actions use Pundit authorization and that indexes use policy scopes.
+

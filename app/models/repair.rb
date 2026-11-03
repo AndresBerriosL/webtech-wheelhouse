@@ -1,14 +1,18 @@
 class Repair < ApplicationRecord
+  has_many_attached :intake_photos
   belongs_to :bike
   belongs_to :customer
   belongs_to :staff_member, optional: true
-  
+
   belongs_to :received_by,
             class_name: "User",
             optional: true
 
 
   has_many :repair_services, dependent: :destroy
+
+
+
 
   has_many :services,
            through: :repair_services,

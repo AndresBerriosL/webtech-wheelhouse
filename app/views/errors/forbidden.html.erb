@@ -1,0 +1,19 @@
+
+<% content_for :title, "403 Forbidden" %>
+
+<div class="text-center py-5">
+  <h1 class="display-4">403 Forbidden</h1>
+
+  <p class="lead">
+    You are not authorized to perform this action.
+  </p>
+
+  <p>
+    Your account does not have permission to access
+    this page or modify this resource.
+  </p>
+
+  <%= link_to "Back to home",
+      root_path,
+      class: "btn btn-primary" %>
+</div>

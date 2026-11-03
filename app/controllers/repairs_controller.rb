@@ -1,17 +1,28 @@
 class RepairsController < ApplicationController
   before_action :set_repair, only: [:show, :edit, :update, :destroy]
 
+
   def index
-    @repairs = Repair.includes(:bike, :customer, received_by: :staff_member).by_promised_date
+    authorize Repair
+
+    @repairs = policy_scope(Repair)
+                .includes(:bike, :customer, received_by: :staff_member)
+                .by_promised_date
   end
 
+
+
   def show
+    authorize @repair
+
     @repair_services =
       @repair.repair_services.includes(:service).by_service_name
   end
 
+
   def new
     @repair = Repair.new
+    authorize @repair
 
     if params[:bike_id].present?
       bike = Bike.find_by(id: params[:bike_id])
@@ -24,12 +35,17 @@ class RepairsController < ApplicationController
   end
 
   def edit
+    authorize @repair
+
     3.times { @repair.repair_services.build }
   end
 
-  
+
   def create
-    @repair = Repair.new(repair_params)
+    @repair = Repair.new
+    authorize @repair
+
+    @repair.assign_attributes(repair_params)
     @repair.received_by = Current.user
 
     if @repair.save
@@ -43,6 +59,7 @@ class RepairsController < ApplicationController
 
 
   def update
+    authorize @repair
     if @repair.update(repair_params)
       redirect_to @repair,
                   notice: "Repair ##{@repair.id} was updated."
@@ -53,6 +70,7 @@ class RepairsController < ApplicationController
   end
 
   def destroy
+    authorize @repair
     if @repair.destroy
       redirect_to repairs_path,
                   status: :see_other,
@@ -66,7 +84,7 @@ class RepairsController < ApplicationController
 
   private
 
-  
+
   def set_repair
     @repair = Repair.includes(
       :bike,
@@ -78,28 +96,14 @@ class RepairsController < ApplicationController
   end
 
 
-  
+
+
   def repair_params
     params.expect(
-      repair: [
-        :bike_id,
-        :customer_id,
-        :staff_member_id,
-        :received_at,
-        :promised_on,
-        :state,
-        :quoted_at,
-        :customer_decision,
-        :picked_up_at,
-        repair_services_attributes: [[
-          :id,
-          :service_id,
-          :charged_price,
-          :_destroy
-        ]]
-      ]
+      repair: policy(@repair).permitted_attributes
     )
   end
+
 
 
   def ensure_empty_lines

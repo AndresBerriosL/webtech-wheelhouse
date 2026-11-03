@@ -34,17 +34,17 @@ The development database uses PostgreSQL.
 
 The application uses PostgreSQL. On my Windows setup the PostgreSQL role is `postgres`.
 
-Before running Rails in Windows CMD, set the PostgreSQL connection variables:
 
-```bat
-$env:POSTGRES_PASSWORD = Read-Host "Contraseña de PostgreSQL"
+Before running Rails in Windows PowerShell, configure PostgreSQL:
+
+```powershell
+$env:POSTGRES_PASSWORD = Read-Host "PostgreSQL password"
+$env:PGHOST = "127.0.0.1"
+$env:PGPORT = "5433"
 ```
 
-If PostgreSQL is running on a non-default port, also set `PGPORT`. For example, my local installation uses:
+Change the port if your PostgreSQL installation uses a different one.
 
-```bat
-set PGPORT=5433
-```
 
 ## Setup
 
